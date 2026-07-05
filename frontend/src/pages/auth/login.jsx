@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Login() {
     const [role, setRole] = useState('')
@@ -9,38 +10,28 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
-    // Enforce no-scroll globally ONLY when the login page is active
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, []);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Login credentials:', { role, username, password })
-    }
-
     async function handleLogin(e) {
-        e.preventDefault();
+        e.preventDefault()
+      
        
         if(!role || !username || !password) {
             toast.error("Please fill in all fields");
             return
         }
         try {
-            const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "", {
+
+            
+            const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/users/loginuser", {
                 username: username,
                 password: password,
             })
             
             toast.success("Login Successful");
             localStorage.setItem("token", response.data.token);
-
-            if (role=="") {
-                navigate("/");
-            } else if(role=="") {
+            localStorage.setItem("role", response.data.role)
+            if (response.data.role=="Docter") {
+                navigate("/dr.tharaka");
+            } else if(role=="Drugs-Manager") {
                 navigate("/");
             } else if(role=="/")
                 navigate("/")
@@ -48,7 +39,9 @@ export default function Login() {
         } catch (err) {
             toast.error(err.response?.data?.message || "Login failed");
         }
-    }    
+    }   
+    
+    
 
     return (
         <div className="h-screen w-screen overflow-hidden flex items-center justify-center bg-hospital-bg p-4 font-sans">
@@ -68,7 +61,7 @@ export default function Login() {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-5">
+                <form onSubmit={handleLogin} className="flex flex-col gap-3 sm:gap-5">
                     <div className="flex flex-col gap-1.5 sm:gap-2">
                         <label htmlFor="role" className="text-xs sm:text-sm font-medium text-hospital-text ml-1">Select Role</label>
                         <div className="relative">
