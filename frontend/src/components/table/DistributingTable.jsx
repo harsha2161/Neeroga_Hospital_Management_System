@@ -290,15 +290,3 @@ export default function DistributingTable({ data, title }) {
     </main>
   );
 }
-type = "submit"
-className = "flex items-center gap-2 px-8 py-3 bg-hospital-accent text-white rounded-xl shadow-md hover:bg-teal-700 hover:shadow-lg font-bold transition-all uppercase tracking-wide text-sm"
-  >
-  <FiSend className="w-4 h-4" /> Dispatch { title }
-            </button >
-          </div >
-        </form >
-      </div >
-
-    </main >
-  );
-}
