@@ -26,7 +26,8 @@ export default function StockEntryForm({ title }) {
     item: '',
     qty: '',
     price: '',
-    expiryDate: ''
+    expiryDate: '',
+    bufferLevel: ''
   });
 
   const [pendingItems, setPendingItems] = useState([]);
@@ -46,7 +47,7 @@ export default function StockEntryForm({ title }) {
     setPendingItems([...pendingItems, { ...formData, id: Date.now() }]);
 
     // Reset form for rapid entry, but keep the Date Received as it rarely changes per batch
-    setFormData(prev => ({ ...prev, category: '', item: '', qty: '', price: '', expiryDate: '' }));
+    setFormData(prev => ({ ...prev, category: '', item: '', qty: '', price: '', expiryDate: '', bufferLevel: '' }));
   };
 
   const handleRemoveFromList = (id) => {
@@ -155,6 +156,16 @@ export default function StockEntryForm({ title }) {
                 className="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-hospital-primary outline-none text-slate-700 text-sm"
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">Buffer Level</label>
+              <input
+                type="number" min="0" required
+                value={formData.bufferLevel}
+                onChange={(e) => handleChange('bufferLevel', e.target.value)}
+                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-hospital-primary outline-none text-slate-700 text-sm"
+              />
+            </div>
           </div>
 
           <button
@@ -183,6 +194,7 @@ export default function StockEntryForm({ title }) {
                   <th className="px-4 py-3 text-right">Unit Price</th>
                   <th className="px-4 py-3 text-right">Total Price</th>
                   <th className="px-4 py-3">Expiry</th>
+                  <th className="px-4 py-3 text-center">Buffer Level</th>
                   <th className="px-4 py-3 rounded-tr-lg text-right">Action</th>
                 </tr>
               </thead>
@@ -195,6 +207,7 @@ export default function StockEntryForm({ title }) {
                     <td className="px-4 py-3 text-right font-medium text-slate-500">Rs. {Number(item.price).toFixed(2)}</td>
                     <td className="px-4 py-3 text-right font-bold text-hospital-primary">Rs. {(Number(item.qty) * Number(item.price)).toFixed(2)}</td>
                     <td className="px-4 py-3 text-slate-500">{item.expiryDate || '-'}</td>
+                    <td className="px-4 py-3 text-center font-medium text-slate-700">{item.bufferLevel}</td>
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => handleRemoveFromList(item.id)}
@@ -211,7 +224,7 @@ export default function StockEntryForm({ title }) {
                 <tr>
                   <td colSpan="4" className="px-4 py-4 text-right uppercase text-xs tracking-widest text-slate-500">Total Batch Value:</td>
                   <td className="px-4 py-4 text-right text-hospital-primary text-base">Rs. {calculateTotalValue().toFixed(2)}</td>
-                  <td colSpan="2"></td>
+                  <td colSpan="3"></td>
                 </tr>
               </tfoot>
             </table>

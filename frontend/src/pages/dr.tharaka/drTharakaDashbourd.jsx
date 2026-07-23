@@ -156,7 +156,7 @@ export default function DrTharakaDashboard() {
                                                         <div className="w-24 bg-slate-100 rounded-full h-1.5 overflow-hidden">
                                                             <div className="bg-red-500 h-1.5 rounded-full" style={{ width: `${Math.min(percent, 100)}%` }}></div>
                                                         </div>
-                                                        <span className="text-[10px] text-hospital-muted mt-0.5">Min: {drug.min}</span>
+                                                        <span className="text-[10px] text-hospital-muted mt-0.5">Buffer Level: {drug.min}</span>
                                                     </div>
                                                 </td>
                                             </tr>
