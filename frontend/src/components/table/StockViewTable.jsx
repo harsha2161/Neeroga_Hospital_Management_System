@@ -4,24 +4,39 @@ import DrTharakaNavbar from '../../components/layout/DrTharakaNavbar';
 
 export default function StockViewTable({ data, name, title }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('All');
+  const [filterLocation, setFilterLocation] = useState('All');
 
   const masterStock = data;
   const displayName = name || title;
 
-  // 1. Filter by search term
-  let filteredData = masterStock.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // 1. Filter by search term, category, and location
+  let filteredData = masterStock.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          item.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory === 'All' || item.category === filterCategory;
+    const matchesLocation = filterLocation === 'All' || (item.location || 'Master Stock') === filterLocation;
+    
+    return matchesSearch && matchesCategory && matchesLocation;
+  });
 
-  // 2. Sort: Less than 50 qty first
+  // 2. Sort: Low stock (below buffer level) first, then nearing expiry
   filteredData.sort((a, b) => {
-    const aIsLow = a.qty < 50;
-    const bIsLow = b.qty < 50;
+    const aBuffer = a.bufferLevel || 50;
+    const bBuffer = b.bufferLevel || 50;
+    const aIsLow = a.qty < aBuffer;
+    const bIsLow = b.qty < bBuffer;
 
     if (aIsLow && !bIsLow) return -1;
     if (!aIsLow && bIsLow) return 1;
+    
+    if (a.expiry !== '-' && b.expiry !== '-') {
+      return new Date(a.expiry) - new Date(b.expiry);
+    }
+    if (a.expiry !== '-' && b.expiry === '-') return -1;
+    if (a.expiry === '-' && b.expiry !== '-') return 1;
+    
     return 0; // Keep original order otherwise
   });
 
@@ -39,28 +54,60 @@ export default function StockViewTable({ data, name, title }) {
 
         </div>
 
-        {/* Search Bar */}
-        <div className="bg-white rounded-t-2xl border border-slate-200 p-5 flex items-center justify-between print:hidden">
-          <div className="relative w-full max-w-lg">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search by Item ID, Name, or Category..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-hospital-primary focus:ring-2 focus:ring-hospital-primary/20 outline-none text-slate-700 bg-slate-50 focus:bg-white transition-all text-sm font-medium"
-            />
+        {/* Search Bar & Filters */}
+        <div className="bg-white rounded-t-2xl border border-slate-200 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
+            <div className="relative w-full md:w-80">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search by ID, Name..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-hospital-primary focus:ring-2 focus:ring-hospital-primary/20 outline-none text-slate-700 bg-slate-50 focus:bg-white transition-all text-sm font-medium"
+              />
+            </div>
+            
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="flex items-center gap-2 bg-slate-50 px-3 py-2.5 rounded-xl border border-slate-200">
+                <FiFilter className="text-slate-400" />
+                <select 
+                  className="bg-transparent border-none text-sm font-medium text-slate-700 focus:outline-none w-28 cursor-pointer"
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Tablets">Tablets</option>
+                  <option value="Syrups">Syrups</option>
+                  <option value="Injections">Injections</option>
+                  <option value="Equipment">Equipment</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2 bg-slate-50 px-3 py-2.5 rounded-xl border border-slate-200">
+                <select 
+                  className="bg-transparent border-none text-sm font-medium text-slate-700 focus:outline-none w-28 cursor-pointer"
+                  value={filterLocation}
+                  onChange={(e) => setFilterLocation(e.target.value)}
+                >
+                  <option value="All">All Locations</option>
+                  <option value="Master Stock">Master Stock</option>
+                  <option value="Theater 1">Theater 1</option>
+                  <option value="Theater 2">Theater 2</option>
+                  <option value="ICU">ICU</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-end">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-2 px-4 py-2.5 bg-hospital-accent text-white rounded-xl shadow-sm hover:bg-teal-700 font-bold transition-colors text-sm"
+              className="flex items-center gap-2 px-4 py-2.5 bg-hospital-accent text-white rounded-xl shadow-sm hover:bg-teal-700 font-bold transition-colors text-sm whitespace-nowrap"
             >
-              <FiDownload /> Export Data
+              <FiDownload /> Export
             </button>
           </div>
-
         </div>
 
         {/* Table */}
@@ -81,7 +128,7 @@ export default function StockViewTable({ data, name, title }) {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredData.map((item) => {
-                  const isLowStock = item.qty < 50;
+                  const isLowStock = item.qty < (item.bufferLevel || 50);
                   return (
                     <tr key={item.id} className={`hover:bg-slate-50 transition-colors ${isLowStock ? 'bg-red-50/20' : ''}`}>
                       <td className="px-6 py-4 font-bold text-slate-600">{item.id}</td>
