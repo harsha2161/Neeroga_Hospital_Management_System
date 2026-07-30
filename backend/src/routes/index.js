@@ -5,7 +5,4 @@ const AppRoute = express.Router()
 
 AppRoute.use("/users", UserRouter)
 
-
-AppRoute.use("/users", UserRouter)
-
 module.exports = AppRoute;
