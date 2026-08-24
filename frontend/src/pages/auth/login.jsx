@@ -44,33 +44,33 @@ export default function Login() {
 
 
     return (
-        <div className="h-screen w-screen overflow-hidden flex items-center justify-center bg-hospital-bg p-4 font-sans relative">
+        <div className="h-[100dvh] w-screen overflow-hidden flex items-start sm:items-center justify-center bg-hospital-bg p-4 font-sans relative">
 
-            <div className="w-full max-w-4xl max-h-full overflow-y-auto bg-hospital-surface/80 backdrop-blur-2xl border border-white/50 rounded-3xl p-8 sm:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-500 relative z-10 custom-scrollbar flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div className="w-full max-w-4xl max-h-full overflow-y-auto bg-hospital-surface/80 backdrop-blur-2xl border border-white/50 rounded-3xl p-6 sm:p-8 md:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-500 relative z-10 custom-scrollbar flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-12 mt-6 sm:mt-0">
 
-                <div className="w-full md:w-5/12 flex flex-col items-center justify-center text-center group cursor-pointer border-b md:border-b-0 md:border-r border-slate-200 pb-8 md:pb-0 md:pr-12">
-                    <div className="inline-block mb-4 sm:mb-6 relative transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                <div className="w-full md:w-5/12 flex flex-col items-center justify-center text-center group cursor-pointer border-b md:border-b-0 md:border-r border-slate-200 pb-4 sm:pb-6 md:pb-0 md:pr-12">
+                    <div className="inline-block mb-2 sm:mb-4 md:mb-6 relative transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                         <div className="absolute inset-0 bg-white/30 rounded-full blur-xl group-hover:bg-white/50 transition-colors duration-500"></div>
                         <img
                             src="/neeroga_logo.jpg"
                             alt="Neeroga Hospital Logo"
-                            className="w-24 h-24 sm:w-36 sm:h-36 object-cover rounded-full border-4 border-white shadow-lg relative z-10"
+                            className="w-16 h-16 sm:w-24 sm:h-24 md:w-36 md:h-36 object-cover rounded-full border-2 sm:border-4 border-white shadow-lg relative z-10"
                         />
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-hospital-text tracking-tight mb-2 drop-shadow-sm">Welcome Back</h2>
-                    <p className="text-hospital-muted text-sm sm:text-base font-medium tracking-wide mt-1">
-                        Neeroga Hospital<br />Inventory Management System
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-hospital-text tracking-tight mb-1 sm:mb-2 drop-shadow-sm">Welcome Back</h2>
+                    <p className="text-hospital-muted text-xs sm:text-sm md:text-base font-medium tracking-wide mt-0 sm:mt-1">
+                        Neeroga Hospital<br className="hidden sm:block" /> <span className="sm:hidden">-</span> Inventory Management
                     </p>
                 </div>
 
-                <form onSubmit={handleLogin} className="w-full md:w-7/12 flex flex-col gap-6 sm:gap-8">
-                    <div className="flex flex-col gap-3">
-                        <label className="text-xs sm:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Select Role</label>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <form onSubmit={handleLogin} className="w-full md:w-7/12 flex flex-col gap-3 sm:gap-6 md:gap-8 pt-2 sm:pt-0">
+                    <div className="flex flex-col gap-2 sm:gap-3">
+                        <label className="text-[10px] sm:text-xs md:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Select Role</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                             <button
                                 type="button"
                                 onClick={() => { setRole('Admin'); setUsername('Admin'); }}
-                                className={`py-3 px-2 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Admin'
+                                className={`py-2 sm:py-3 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Admin'
                                         ? 'bg-hospital-primary text-white border-hospital-primary shadow-lg scale-105 -translate-y-1'
                                         : 'bg-white text-hospital-text border-slate-200 hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5'
                                     }`}
@@ -80,7 +80,7 @@ export default function Login() {
                             <button
                                 type="button"
                                 onClick={() => { setRole('Drugs'); setUsername(''); }}
-                                className={`py-3 px-2 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Drugs'
+                                className={`py-2 sm:py-3 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Drugs'
                                         ? 'bg-hospital-primary text-white border-hospital-primary shadow-lg scale-105 -translate-y-1'
                                         : 'bg-white text-hospital-text border-slate-200 hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5'
                                     }`}
@@ -90,7 +90,7 @@ export default function Login() {
                             <button
                                 type="button"
                                 onClick={() => { setRole('Inventory'); setUsername(''); }}
-                                className={`py-3 px-2 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Inventory'
+                                className={`py-2 sm:py-3 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 flex items-center justify-center border ${role === 'Inventory'
                                         ? 'bg-hospital-primary text-white border-hospital-primary shadow-lg scale-105 -translate-y-1'
                                         : 'bg-white text-hospital-text border-slate-200 hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5'
                                     }`}
@@ -102,9 +102,9 @@ export default function Login() {
 
                     <div className={`grid transition-all duration-500 ease-in-out ${role && role !== 'Admin' ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden">
-                            <div className="flex flex-col gap-3 pt-2 pb-1">
-                                <label className="text-xs sm:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Select Username</label>
-                                <div className="flex flex-wrap gap-2 sm:gap-3">
+                            <div className="flex flex-col gap-2 sm:gap-3 pt-1 pb-1">
+                                <label className="text-[10px] sm:text-xs md:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Select Username</label>
+                                <div className="flex flex-nowrap overflow-x-auto gap-2 sm:gap-3 pb-2 custom-scrollbar w-full">
                                     {role === 'Drugs' && (
                                         <>
                                             {['Officer', 'OPD', 'Theater', 'Channel Room'].map((u, i) => (
@@ -113,7 +113,7 @@ export default function Login() {
                                                     type="button"
                                                     style={{ animationDelay: `${i * 50}ms` }}
                                                     onClick={() => setUsername(u)}
-                                                    className={`flex-1 min-w-[100px] sm:min-w-[120px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 active:scale-95 border animate-fade-in text-center ${username === u
+                                                    className={`flex-shrink-0 py-1.5 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 active:scale-95 border animate-fade-in text-center whitespace-nowrap ${username === u
                                                             ? 'bg-hospital-primary text-white border-hospital-primary shadow-md scale-105'
                                                             : 'bg-white text-hospital-text border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                                                         }`}
@@ -131,7 +131,7 @@ export default function Login() {
                                                     type="button"
                                                     style={{ animationDelay: `${i * 50}ms` }}
                                                     onClick={() => setUsername(u)}
-                                                    className={`flex-1 min-w-[100px] sm:min-w-[120px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 active:scale-95 border animate-fade-in text-center ${username === u
+                                                    className={`flex-shrink-0 py-1.5 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 active:scale-95 border animate-fade-in text-center whitespace-nowrap ${username === u
                                                             ? 'bg-hospital-primary text-white border-hospital-primary shadow-md scale-105'
                                                             : 'bg-white text-hospital-text border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                                                         }`}
@@ -146,8 +146,8 @@ export default function Login() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
-                        <label htmlFor="password" className="text-xs sm:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Password</label>
+                    <div className="flex flex-col gap-2 sm:gap-3">
+                        <label htmlFor="password" className="text-[10px] sm:text-xs md:text-sm font-semibold text-hospital-text uppercase tracking-wider ml-1">Password</label>
                         <input
                             type="password"
                             id="password"
@@ -155,17 +155,17 @@ export default function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-white text-hospital-text text-base transition-all duration-300 
+                            className="w-full px-3 sm:px-4 py-2 sm:py-3.5 rounded-xl border border-slate-200 bg-white text-hospital-text text-sm sm:text-base transition-all duration-300 
                             placeholder:text-hospital-muted/60 focus:outline-none focus:border-hospital-secondary focus:ring-4 focus:ring-hospital-secondary/20 shadow-sm"
                         />
                     </div>
 
                     <button
                         type="submit"
-                        className="mt-4 w-full bg-hospital-primary hover:bg-hospital-secondary text-white text-base sm:text-lg font-bold py-4 rounded-xl transition-all duration-300 shadow-md shadow-hospital-primary/30 hover:shadow-lg hover:shadow-hospital-secondary/40 hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] flex items-center justify-center gap-2 group"
+                        className="mt-1 sm:mt-4 w-full bg-hospital-primary hover:bg-hospital-secondary text-white text-sm sm:text-lg font-bold py-2.5 sm:py-4 rounded-xl transition-all duration-300 shadow-md shadow-hospital-primary/30 hover:shadow-lg hover:shadow-hospital-secondary/40 hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] flex items-center justify-center gap-2 group"
                     >
                         <span>Sign In</span>
-                        <svg className="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </button>
                 </form>
             </div>
